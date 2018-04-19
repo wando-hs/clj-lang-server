@@ -1,5 +1,4 @@
-(defn log
-  {:summary "log something"}
-  [& xs]
+(defn abner
+  {:summary "log something"}[& xs]
   (print xs)
-  xs)
+  ks)

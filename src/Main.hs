@@ -11,13 +11,16 @@ import Text.Megaparsec.Expr
 data Sexp = Function String String
 type Parser = Parsec Void String
 
-functionHeader :: Parser String
-functionHeader = someTill anyChar (char '[' )
+symbol :: Parser String
+symbol = space *> some (noneOf ")\n\t\r ")
 
-main :: IO ()
+sexp :: Parser [String]
+sexp = between (char '(') (char ')') $ some symbol
+
+--main :: IO ()
 main = do
     handle <- openFile "resources/core.clj" ReadMode
     contents <- hGetContents handle
-    parsed <- parseTest functionHeader contents
-    hClose handle
-    return parsed
+    parsed <- return $ parse sexp "" contents
+    return $ parsed
+
